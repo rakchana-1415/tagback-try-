@@ -53,8 +53,8 @@
   projectId: "tagback-50f4e",
   storageBucket: "tagback-50f4e.firebasestorage.app",
   messagingSenderId: "1029603108645",
-  appId: "1:1029603108645:web:39135a785aba2d7d6a1ccc",
-  measurementId: "G-GT7B0ED34D"
+  appId: "1:1029603108645:web:46f2811764a677716a1ccc",
+  measurementId: "G-F8CX7WMX2E"
 };
 
 // Initialize Firebase
