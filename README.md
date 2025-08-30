@@ -1,14 +1,4 @@
-[10:08 pm, 29/8/2025] Rakchana .S: <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TagBack - Secure QR</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f4f6ff; text-align: center; padding: 20px; }
-    .card { background: white; max-width: 420px; margin: 20px auto; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    input, button { width: 90%; padding: 10px; margin: 10px 0; border-radius: 8px; border: 1px solid…
-[10:09 pm, 29/8/2025] Rakchana .S: <!DOCTYPE html>
+[10:08 pm, 29/8/2025] Rakchana .S:<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -28,7 +18,7 @@
 </head>
 <body>
 
-  <!-- Authentication Card -->
+  <!-- Authentication -->
   <div class="card" id="authCard">
     <h1>TagBack Login</h1>
     <input type="email" id="email" placeholder="Enter Email" required>
@@ -37,7 +27,7 @@
     <button onclick="login()">Login</button>
   </div>
 
-  <!-- User Profile Card -->
+  <!-- User Form -->
   <div class="card hidden" id="formCard">
     <h1>Your TagBack Profile</h1>
     <input type="text" id="name" placeholder="Enter Name">
@@ -50,26 +40,25 @@
     <p id="link"></p>
   </div>
 
-  <!-- Firebase + QR -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <!-- Firebase + QR Code -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
 
   <script>
-    // 🔹 const firebaseConfig = {
-  apiKey: "AIzaSyDBoBZj-1bwW-H8WxDzWJK1EFFGenA-2Yg",
-  authDomain: "tagback-50f4e.firebaseapp.com",
-  projectId: "tagback-50f4e",
-  storageBucket: "tagback-50f4e.firebasestorage.app",
-  messagingSenderId: "1029603108645",
-  appId: "1:1029603108645:web:39135a785aba2d7d6a1ccc",
-  measurementId: "G-GT7B0ED34D"
-};
+    // 🔹 Replace with YOUR Firebase config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+    // Init Firebase
+    const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
 
@@ -137,7 +126,7 @@ const analytics = getAnalytics(app);
       }
     }
 
-    // Show Profile
+    // Show profile form
     async function showProfile() {
       document.getElementById("authCard").classList.add("hidden");
       document.getElementById("formCard").classList.remove("hidden");
@@ -157,7 +146,7 @@ const analytics = getAnalytics(app);
       }
     }
 
-    // Display Profile via QR
+    // Profile View Mode (when scanning QR)
     window.onload = async function() {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.has("id")) {
