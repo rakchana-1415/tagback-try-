@@ -41,28 +41,26 @@
   </div>
 
   <!-- Firebase + QR Code -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    import QRCode from "https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js";
 
-  <script>
+    // 🔹 Replace with YOUR Firebase config
     const firebaseConfig = {
-  apiKey: "AIzaSyDBoBZj-1bwW-H8WxDzWJK1EFFGenA-2Yg",
-  authDomain: "tagback-50f4e.firebaseapp.com",
-  projectId: "tagback-50f4e",
-  storageBucket: "tagback-50f4e.firebasestorage.app",
-  messagingSenderId: "1029603108645",
-  appId: "1:1029603108645:web:46f2811764a677716a1ccc",
-  measurementId: "G-F8CX7WMX2E"
-};
+      apiKey: "AIzaSyDBoBZj-1bwW-H8WxDzWJK1EFFGenA-2Yg",
+      authDomain: "tagback-50f4e.firebaseapp.com",
+      projectId: "tagback-50f4e",
+      storageBucket: "tagback-50f4e.appspot.com",
+      messagingSenderId: "1029603108645",
+      appId: "1:1029603108645:web:46f2811764a677716a1ccc"
+    };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-    
-      const auth = firebase.auth();
-    const db = firebase.firestore();
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
     let currentUserId = null;
 
@@ -71,9 +69,9 @@ const analytics = getAnalytics(app);
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       try {
-        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         currentUserId = userCredential.user.uid;
-        await db.collection("users").doc(currentUserId).set({ name: "", phone: "", extra: "" });
+        await setDoc(doc(db, "users", currentUserId), { name: "", phone: "", extra: "" });
         showProfile();
       } catch (error) {
         alert(error.message);
@@ -85,7 +83,7 @@ const analytics = getAnalytics(app);
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       try {
-        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
         currentUserId = userCredential.user.uid;
         showProfile();
       } catch (error) {
@@ -99,7 +97,7 @@ const analytics = getAnalytics(app);
       const phone = document.getElementById("phone").value;
       const extra = document.getElementById("extra").value;
 
-      await db.collection("users").doc(currentUserId).set({ name, phone, extra });
+      await setDoc(doc(db, "users", currentUserId), { name, phone, extra });
 
       const profileUrl = window.location.origin + window.location.pathname + "?id=" + currentUserId;
 
@@ -111,8 +109,8 @@ const analytics = getAnalytics(app);
     }
 
     // Logout
-    function logout() {
-      auth.signOut();
+    async function logout() {
+      await signOut(auth);
       document.getElementById("authCard").classList.remove("hidden");
       document.getElementById("formCard").classList.add("hidden");
     }
@@ -120,9 +118,8 @@ const analytics = getAnalytics(app);
     // Delete Profile
     async function deleteProfile() {
       if (confirm("⚠️ Are you sure you want to delete your profile? This cannot be undone.")) {
-        await db.collection("users").doc(currentUserId).delete();
-        const user = auth.currentUser;
-        await user.delete();
+        await deleteDoc(doc(db, "users", currentUserId));
+        await deleteUser(auth.currentUser);
         alert("Profile deleted successfully.");
         location.reload();
       }
@@ -133,9 +130,9 @@ const analytics = getAnalytics(app);
       document.getElementById("authCard").classList.add("hidden");
       document.getElementById("formCard").classList.remove("hidden");
 
-      const doc = await db.collection("users").doc(currentUserId).get();
-      if (doc.exists) {
-        const data = doc.data();
+      const docSnap = await getDoc(doc(db, "users", currentUserId));
+      if (docSnap.exists()) {
+        const data = docSnap.data();
         document.getElementById("name").value = data.name;
         document.getElementById("phone").value = data.phone;
         document.getElementById("extra").value = data.extra;
@@ -153,10 +150,10 @@ const analytics = getAnalytics(app);
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.has("id")) {
         let userId = urlParams.get("id");
-        let doc = await db.collection("users").doc(userId).get();
+        let docSnap = await getDoc(doc(db, "users", userId));
 
-        if (doc.exists) {
-          let data = doc.data();
+        if (docSnap.exists()) {
+          let data = docSnap.data();
           document.body.innerHTML = `
             <div class="card">
               <h1>TagBack Profile</h1>
