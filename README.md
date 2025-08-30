@@ -47,19 +47,21 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
 
   <script>
-    // 🔹 Replace with YOUR Firebase config
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
+  apiKey: "AIzaSyDBoBZj-1bwW-H8WxDzWJK1EFFGenA-2Yg",
+  authDomain: "tagback-50f4e.firebaseapp.com",
+  projectId: "tagback-50f4e",
+  storageBucket: "tagback-50f4e.firebasestorage.app",
+  messagingSenderId: "1029603108645",
+  appId: "1:1029603108645:web:39135a785aba2d7d6a1ccc",
+  measurementId: "G-GT7B0ED34D"
+};
 
-    // Init Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+    
+      const auth = firebase.auth();
     const db = firebase.firestore();
 
     let currentUserId = null;
