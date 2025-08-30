@@ -47,7 +47,7 @@
     import { getFirestore, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
     import QRCode from "https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js";
 
-    // 🔹 Replace with YOUR Firebase config
+    
     const firebaseConfig = {
       apiKey: "AIzaSyDBoBZj-1bwW-H8WxDzWJK1EFFGenA-2Yg",
       authDomain: "tagback-50f4e.firebaseapp.com",
