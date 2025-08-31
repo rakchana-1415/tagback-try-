@@ -100,19 +100,20 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, addDoc, doc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // 1) FILL THESE VALUES from your Firebase project settings (Project Settings → General → Your Apps)
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
+    apiKey: "AIzaSyAND6PPkKxns0ebU71h7TAKTI3RGFtmql4",
+    authDomain: "tagback-quick.firebaseapp.com",
+    projectId: "tagback-quick",
+    storageBucket: "tagback-quick.firebasestorage.app",
+    messagingSenderId: "422442680722",
+    appId: "1:422442680722:web:72756331a788f87e9f014b",
+    measurementId: "G-XJWH5K3F3C"
+  };
 
-    // --- App & DB ---
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 
     // --- Elements ---
     const modeCreate = document.getElementById('mode-create');
